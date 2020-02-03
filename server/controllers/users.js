@@ -4,7 +4,9 @@ const jwt = require('jsonwebtoken');
 
 const ExtractJwt = passportJWT.ExtractJwt;
 const jwtOptions = {};
-jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme('jwt');
+jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme('JWT');
+// jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+
 jwtOptions.secretOrKey = 'movieratingapplicationsecretkey';
 
 module.exports.controller = (app) => {
@@ -36,9 +38,9 @@ module.exports.controller = (app) => {
                         if (error) {
                             throw err;
                         } if (isMatch) {
-                            const payload = { id: user._id };
+                            const payload = { _id: user._id };
                             const token = jwt.sign(payload, jwtOptions.secretOrKey);
-                            res.json({ message: 'ok', token: token });
+                            res.json({ message: 'ok', token});
                         } else {
                             res.status(401).json({ message: 'The password is incorrect !' });
                         };

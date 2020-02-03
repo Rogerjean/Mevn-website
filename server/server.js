@@ -9,38 +9,24 @@ const passportJWT = require('passport-jwt');
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 const jwtOptions = {};
+const User = require('./models/User');
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme('JWT');
-// jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeader();
 jwtOptions.secretOrKey = 'movieratingapplicationsecretkey';
-
-// passport.use(new JwtStrategy(jwtOptions), (jwt_payload, done) => {
-//     console.log(jwt_payload.sub);
-
-//     User.findOne({ id: jwt_payload.sub }, (err, user) => {
-//         if (err) {
-//             throw err;
-//         }
-//             callback(null, user);
-//         }
-//     });
-// });
 
 passport.use(
     new JwtStrategy(jwtOptions, function(jwt_payload, done) {
-      // User.findOne({ id: jwt_payload._id }, function(err, user) {
-      //   if (err) {
-      //     return done(err, false);
-      //   }
+      User.findOne({ _id: jwt_payload._id }, function(err, user) {
+        if (err) {
+          return done(err, false);
+        }
         if (user) {
           return done(null, user);
         } else {
           return done(null, false);
-          // or you could create a new account
         }
-      // });
+      });
     })
   );
-
 const app = express();
 const router = express.Router();
 app.use(morgan('combined'));
