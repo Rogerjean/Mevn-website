@@ -38,7 +38,7 @@ module.exports.controller = (app) => {
                         if (error) {
                             throw err;
                         } if (isMatch) {
-                            const payload = { _id: user._id };
+                            const payload = { id: user._id };
                             const token = jwt.sign(payload, jwtOptions.secretOrKey);
                             res.json({ message: 'ok', token});
                         } else {

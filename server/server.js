@@ -15,7 +15,7 @@ jwtOptions.secretOrKey = 'movieratingapplicationsecretkey';
 
 passport.use(
     new JwtStrategy(jwtOptions, function(jwt_payload, done) {
-      User.findOne({ _id: jwt_payload._id }, function(err, user) {
+      User.findOne({ id: jwt_payload._id }, function(err, user) {
         if (err) {
           return done(err, false);
         }
